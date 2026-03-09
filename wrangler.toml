@@ -1,0 +1,14 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "meo-tracker"
+compatibility_date = "2024-11-01"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = ".vercel/output"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "meo-database"
+database_id = "YOUR_D1_DATABASE_ID"
+migrations_dir = "prisma/migrations"
+
+[triggers]
+crons = ["0 12 * * *"]

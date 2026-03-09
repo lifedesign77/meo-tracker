@@ -1,0 +1,30 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Keyword {
+  id             String    @id @default(cuid())
+  query          String
+  location       String
+  targetBusiness String    // The Place ID or Name to look for in the results
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  rankings       Ranking[]
+}
+
+model Ranking {
+  id        String   @id @default(cuid())
+  date      DateTime @default(now())
+  rank      Int?     // Using Int? where null indicates it was not found in top X
+  keywordId String
+  keyword   Keyword  @relation(fields: [keywordId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([date, keywordId]) // Only one ranking per keyword per day
+}
